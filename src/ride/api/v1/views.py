@@ -1,7 +1,7 @@
 """Ride API v1 views."""
 
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAdminUser
 from ride.api.v1.models import Ride, Ride_Event
 from ride.api.v1.serializers import (
     RideSerializer,
@@ -16,7 +16,7 @@ class RideViewSet(viewsets.ModelViewSet):
     queryset = Ride.objects.select_related(
         'id_rider', 'id_driver'
     ).prefetch_related('events').all()
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser]
     
     def get_serializer_class(self):
         """Return appropriate serializer class based on action."""
@@ -30,7 +30,7 @@ class RideEventViewSet(viewsets.ModelViewSet):
     
     queryset = Ride_Event.objects.select_related('id_ride').all()
     serializer_class = RideEventSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser]
     
     def get_queryset(self):
         """Filter events by ride_id if provided in query params."""
