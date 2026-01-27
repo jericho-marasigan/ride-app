@@ -6,24 +6,30 @@ RUN apt-get update && apt-get install -y \
 
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
-ENV PATH="/root/.cargo/bin:$PATH"
+ENV PATH="/root/.local/bin:$PATH"
 
 WORKDIR /app
 
-COPY pyproject.toml uv.lock ./
+COPY pyproject.toml uv.lock README.md ./
 
-RUN uv sync --frozen --no-dev
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-dev --no-install-project
+
+COPY src/ ./src/
+
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-dev
 
 FROM python:3.12-slim AS runtime
 
 WORKDIR /app
 
-COPY --from=dependencies /root/.cargo/bin/uv /usr/local/bin/uv
+COPY --from=dependencies /root/.local/bin/uv /usr/local/bin/uv
 
 COPY --from=dependencies /app/.venv /app/.venv
 
-COPY manage.py ./
-COPY pyproject.toml ./
+COPY manage.py pyproject.toml uv.lock README.md ./
+
 COPY src/ ./src/
 
 ENV PATH="/app/.venv/bin:$PATH"

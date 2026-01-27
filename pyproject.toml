@@ -16,5 +16,4 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-package-dir = "src"
-packages = ["*"]
+packages = ["src/core", "src/ride"]
