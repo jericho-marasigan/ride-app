@@ -16,6 +16,9 @@ services:
 
   # init:
   #   image: ride-app:latest
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
   #   container_name: ride-app-init
   #   depends_on:
   #     db:
