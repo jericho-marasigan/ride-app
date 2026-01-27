@@ -34,10 +34,14 @@ services:
       dockerfile: Dockerfile
     image: ride-app:latest
     container_name: ride-app
+    depends_on:
+      db:
+        condition: service_healthy
     # depends_on:
     #   init:
     #     condition: service_completed_successfully
     env_file:
+      - .database.env
       - .env
     ports:
       - "8000:8000"
