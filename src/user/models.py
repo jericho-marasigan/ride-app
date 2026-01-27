@@ -1,3 +1,5 @@
-from django.db import models
+"""User models - imports from API v1."""
 
-# Create your models here.
+from user.api.v1.models import User
+
+__all__ = ['User']
