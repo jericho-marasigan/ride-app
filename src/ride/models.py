@@ -1,3 +1,5 @@
-from django.db import models
+"""Ride models - imports from API v1."""
 
-# Create your models here.
+from ride.api.v1.models import Ride, Ride_Event
+
+__all__ = ['Ride', 'Ride_Event']
