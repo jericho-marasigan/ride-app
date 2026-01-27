@@ -2,6 +2,7 @@
 
 from django.db import models
 from user.api.v1.models import User
+from ride.api.v1.managers import TodayEventsManager
 
 
 class Ride(models.Model):
@@ -39,6 +40,10 @@ class Ride(models.Model):
         db_table = 'ride'
         verbose_name = 'Ride'
         verbose_name_plural = 'Rides'
+        indexes = [
+            models.Index(fields=['pickup_latitude', 'pickup_longitude'], name='ride_pickup_coords'),
+            models.Index(fields=['dropoff_latitude', 'dropoff_longitude'], name='ride_dropoff_coords'),
+        ]
     
     def __str__(self):
         return f"Ride {self.id_ride} - {self.get_status_display()}"
@@ -56,6 +61,9 @@ class Ride_Event(models.Model):
     )
     description = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
+    
+    objects = models.Manager()
+    todays = TodayEventsManager()
     
     class Meta:
         db_table = 'ride_event'

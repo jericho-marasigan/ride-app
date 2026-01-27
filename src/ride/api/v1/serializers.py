@@ -1,5 +1,7 @@
 """Ride API v1 serializers."""
 
+from datetime import datetime
+from django.utils import timezone
 from rest_framework import serializers
 from ride.api.v1.models import Ride, Ride_Event
 from user.api.v1.serializers import UserSerializer
@@ -24,7 +26,7 @@ class RideSerializer(serializers.ModelSerializer):
     
     rider = UserSerializer(source='id_rider', read_only=True)
     driver = UserSerializer(source='id_driver', read_only=True)
-    events = RideEventSerializer(many=True, read_only=True)
+    todays_ride_events = RideEventSerializer(many=True, read_only=True)
     
     class Meta:
         model = Ride
@@ -40,7 +42,7 @@ class RideSerializer(serializers.ModelSerializer):
             'dropoff_latitude',
             'dropoff_longitude',
             'pickup_time',
-            'events',
+            'todays_ride_events',
         ]
         read_only_fields = ['id_ride']
 
