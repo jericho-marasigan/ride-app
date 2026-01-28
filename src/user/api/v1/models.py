@@ -18,6 +18,8 @@ class User(AbstractUser):
         choices=Role.choices,
         default=Role.PASSENGER,
     )
+    first_name = models.CharField(max_length=150, blank=True)
+    last_name = models.CharField(max_length=150, blank=True)
     email = models.EmailField(unique=True, blank=False)
     phone_number = models.CharField(max_length=20, blank=True)
     

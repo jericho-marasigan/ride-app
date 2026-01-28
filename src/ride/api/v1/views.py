@@ -15,6 +15,10 @@ from ride.api.v1.filters import RideFilter, RideEventFilter
 
 class RideViewSet(viewsets.ModelViewSet):
     """ViewSet for Ride model."""
+
+    permission_classes = [IsAdminUser]
+    pagination_class = RideCursorPagination
+    filterset_class = RideFilter
     
     def get_queryset(self):
         """Return queryset with optimized prefetch for today's events."""
@@ -27,10 +31,7 @@ class RideViewSet(viewsets.ModelViewSet):
                 to_attr='todays_ride_events'
             )
         ).all()
-    permission_classes = [IsAdminUser]
-    pagination_class = RideCursorPagination
-    filterset_class = RideFilter
-    
+
     def get_serializer_class(self):
         """Return appropriate serializer class based on action."""
         if self.action == 'create':
@@ -40,7 +41,7 @@ class RideViewSet(viewsets.ModelViewSet):
 
 class RideEventViewSet(viewsets.ModelViewSet):
     """ViewSet for Ride_Event model."""
-    
+
     queryset = Ride_Event.objects.select_related('id_ride').all()
     serializer_class = RideEventSerializer
     permission_classes = [IsAdminUser]
