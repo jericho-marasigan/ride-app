@@ -3,45 +3,40 @@ services:
     image: postgres:16-alpine
     container_name: ride-app-db
     env_file:
-      - .database.env
+      - .env
     volumes:
       - ./data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ride_user -d ride_db"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
       retries: 5
 
-  # init:
-  #   image: ride-app:latest
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   container_name: ride-app-init
-  #   depends_on:
-  #     db:
-  #       condition: service_healthy
-  #   env_file:
-  #     - .env
-  #   command: ["python", "manage.py", "migrate"]
-  #   restart: "no"
-
-  app:
+  init:
+    image: ride-app:latest
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: ride-app-init
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+    command: ["python", "manage.py", "migrate"]
+    restart: "no"
+
+  app:
     image: ride-app:latest
     container_name: ride-app
     depends_on:
       db:
         condition: service_healthy
-    # depends_on:
-    #   init:
-    #     condition: service_completed_successfully
+      init:
+        condition: service_completed_successfully
     env_file:
-      - .database.env
       - .env
     ports:
       - "8000:8000"
