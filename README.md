@@ -170,7 +170,7 @@ curl -X POST http://localhost:8000/rides/ \
   -H "Authorization: Bearer your_access_token" \
   -H "Content-Type: application/json" \
   -d '{
-    "status": "active",
+    "status": "en-route",
     "id_rider": 1,
     "id_driver": 2,
     "pickup_latitude": 40.7128,
