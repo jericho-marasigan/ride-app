@@ -130,7 +130,7 @@ curl -X GET http://localhost:8000/rides/ \
 
 Filter by status:
 ```bash
-curl -X GET "http://localhost:8000/rides/?status=active" \
+curl -X GET "http://localhost:8000/rides/?status=en-route" \
   -H "Authorization: Bearer your_access_token"
 ```
 
@@ -160,7 +160,7 @@ curl -X GET "http://localhost:8000/rides/?ordering=-pickup_time" \
 
 Combine filters and ordering (active rides by rider email, ordered by pickup time):
 ```bash
-curl -X GET "http://localhost:8000/rides/?status=active&rider_email=john@example.com&ordering=pickup_time" \
+curl -X GET "http://localhost:8000/rides/?status=en-route&rider_email=john@example.com&ordering=pickup_time" \
   -H "Authorization: Bearer your_access_token"
 ```
 
